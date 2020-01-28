@@ -1,0 +1,13 @@
+@startuml
+entity users {
+id(PK)
+--
+user_name
+first_name
+last_name
+email
+password
+phone
+user_status
+}
+@enduml
