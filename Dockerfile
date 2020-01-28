@@ -5,16 +5,16 @@ WORKDIR /go/app
 COPY . .
 
 RUN apk add --no-cache git \
- && go build -o app
+ && go build cmd/api/main.go
 
 FROM alpine
 
 WORKDIR /app
 
-COPY --from=build /go/app/app .
+COPY --from=build /go/app/main .
 
 RUN addgroup go \
   && adduser -D -G go go \
-  && chown -R go:go /app/app
+  && chown -R go:go /app/main
 
 CMD ["./app"]
