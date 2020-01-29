@@ -21,7 +21,7 @@ func Run(host string) {
 
 func setRoutes() {
 	get("/ping", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Fprint(w, "Ping")
+		fmt.Fprint(w, "Pong")
 	})
 
 	userPersistence := persistence.NewUserPersistence(infra.DB)
