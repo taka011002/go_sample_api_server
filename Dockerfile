@@ -17,4 +17,4 @@ RUN addgroup go \
   && adduser -D -G go go \
   && chown -R go:go /app/main
 
-CMD ["./app"]
+CMD ["./main"]

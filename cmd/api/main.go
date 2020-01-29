@@ -3,16 +3,13 @@ package main
 import (
 	"fmt"
 	"github.com/taka011002/go_sample_api_server/app"
-	"github.com/taka011002/go_sample_api_server/app/infra"
+	"os"
 )
 
 func main() {
-	// マイグレーション
-	infra.Up()
-
 	// サーバ起動
 	fmt.Println("========================")
-	fmt.Println("Server Start >> http://localhost:8080")
+	fmt.Println(fmt.Sprintf("Server Start >> http://localhost:%s", os.Getenv("PORT")))
 	fmt.Println("========================")
-	app.Run(":8080")
+	app.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 }
