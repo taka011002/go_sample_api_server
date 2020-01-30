@@ -5,6 +5,8 @@ import (
 )
 
 type UserRepository interface {
-	Create(userID, name, email string) error
+	Create(username string, firstName string, lastName string, email string, password string, phone string, userStatus int) error
+	Update(id int, username string, firstName string, lastName string, email string, password string, phone string, userStatus int) error
 	GetByUsername(username string) (*entity.User, error)
+	Delete(id int) error
 }

@@ -32,7 +32,7 @@ func Down() {
 }
 
 func connect() *migrate.Migrate {
-	driver, err := mysql.WithInstance(DB, &mysql.Config{})
+	driver, err := mysql.WithInstance(GetDB(), &mysql.Config{})
 
 	if err != nil {
 		log.Fatal(err)

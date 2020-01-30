@@ -2,19 +2,22 @@ package app
 
 import (
 	"fmt"
+	"log"
+	"net/http"
+
 	"github.com/gorilla/mux"
 	"github.com/taka011002/go_sample_api_server/app/domain/service"
 	"github.com/taka011002/go_sample_api_server/app/handler"
 	"github.com/taka011002/go_sample_api_server/app/infra"
 	"github.com/taka011002/go_sample_api_server/app/infra/persistence"
-	"log"
-	"net/http"
 )
 
 var router *mux.Router
 
 func Run(host string) {
 	router = mux.NewRouter()
+	infra.Init()
+	defer infra.Close()
 	setRoutes()
 	log.Fatal(http.ListenAndServe(host, router))
 }
@@ -24,14 +27,15 @@ func setRoutes() {
 		fmt.Fprint(w, "Pong")
 	})
 
-	userPersistence := persistence.NewUserPersistence(infra.DB)
+	userPersistence := persistence.NewUserPersistence(infra.GetDB())
 	userService := service.NewUserService(userPersistence)
 	userHandler := handler.NewUserHandler(userService)
 
-	get("/user/{username}", userHandler.GetUser)
-	post("/user", userHandler.CreateUser)
-	get("/user", handleRequest(userHandler.GetUser))
-	post("/user", handleRequest(userHandler.UpdateUser))
+	post("/user/login", handler.ApiHandler(userHandler.SignIn))
+	post("/user", handler.ApiHandler(handler.AuthHandler(userHandler.SignUp)))
+	get("/user", handler.ApiHandler(handler.AuthHandler(userHandler.GetUser)))
+	put("/user", handler.ApiHandler(handler.AuthHandler(userHandler.Update)))
+	delete("/user", handler.ApiHandler(handler.AuthHandler(userHandler.Delete)))
 }
 
 // Get wraps the router for GET method
@@ -52,10 +56,4 @@ func put(path string, f func(w http.ResponseWriter, r *http.Request)) {
 // Delete wraps the router for DELETE method
 func delete(path string, f func(w http.ResponseWriter, r *http.Request)) {
 	router.HandleFunc(path, f).Methods("DELETE")
-}
-
-func handleRequest(handler http.HandlerFunc) http.HandlerFunc {
-	return func(w http.ResponseWriter, r *http.Request) {
-		handler.ServeHTTP(w, r)
-	}
 }

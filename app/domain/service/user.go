@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/google/uuid"
 	"github.com/taka011002/go_sample_api_server/app/domain/entity"
 	"github.com/taka011002/go_sample_api_server/app/domain/repository"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type userServiceImpl struct {
@@ -11,12 +11,56 @@ type userServiceImpl struct {
 }
 
 type UserService interface {
-	Create(name, email string) error
+	Create(user *entity.User) error
+	SignIn(username string, password string) error
+	Update(user *entity.User) error
+	Delete(user *entity.User) error
 	GetByUsername(userID string) (*entity.User, error)
 }
 
 func NewUserService(u repository.UserRepository) UserService {
 	return &userServiceImpl{userRepository: u}
+}
+
+func (uu userServiceImpl) Create(user *entity.User) error {
+	//TODO 色々バリデーションをする
+
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+	if err != nil {
+		return err
+	}
+
+	err = uu.userRepository.Create(user.Username, user.FirstName, user.LastName, user.Email, string(hashedPassword), user.Phone, 1)
+	if err != nil {
+		return err
+	}
+	return nil
+}
+
+func (uu userServiceImpl) SignIn(username string, password string) error {
+	user, err := uu.userRepository.GetByUsername(username)
+	if err != nil {
+		return err
+	}
+
+	if err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password)); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (uu userServiceImpl) Update(user *entity.User) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), 10)
+	if err != nil {
+		return err
+	}
+
+	err = uu.userRepository.Update(user.Id, user.Username, user.FirstName, user.LastName, user.Email, string(hashedPassword), user.Phone, user.UserStatus)
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func (uu userServiceImpl) GetByUsername(username string) (*entity.User, error) {
@@ -27,18 +71,8 @@ func (uu userServiceImpl) GetByUsername(username string) (*entity.User, error) {
 	return user, nil
 }
 
-func (uu userServiceImpl) Create(name, email string) error {
-	//本来ならemailのバリデーションをする
-
-	//一意でランダムな文字列を生成する
-	userID, err := uuid.NewRandom()//返り値はuuid型
-	if err != nil {
-		return err
-	}
-
-	//domainを介してinfrastructureで実装した関数を呼び出す。
-	// Persistence（Repository）を呼出
-	err = uu.userRepository.Create(userID.String(), name, email)
+func (uu userServiceImpl) Delete(user *entity.User) error {
+	err := uu.userRepository.Delete(user.Id)
 	if err != nil {
 		return err
 	}

@@ -9,9 +9,9 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-var DB *sql.DB
+var db *sql.DB
 
-func init(){
+func Init() {
 	dbURI := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=True",
 		os.Getenv("MYSQL_USER"),
 		os.Getenv("MYSQL_PASSWORD"),
@@ -20,9 +20,19 @@ func init(){
 		os.Getenv("MYSQL_DATABASE"))
 
 	var err error
-	DB, err = sql.Open("mysql", dbURI)
+	db, err = sql.Open("mysql", dbURI)
 
 	if err != nil {
 		log.Fatal(err)
+	}
+}
+
+func GetDB() *sql.DB {
+	return  db
+}
+
+func Close() {
+	if err := db.Close(); err != nil {
+		panic(err)
 	}
 }
