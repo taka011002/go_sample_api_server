@@ -5,7 +5,7 @@ WORKDIR /go/app
 COPY . .
 
 RUN apk add --no-cache git \
- && go build
+ && go build -o main
 
 FROM alpine
 
