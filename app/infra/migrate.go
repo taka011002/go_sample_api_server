@@ -1,6 +1,7 @@
 package infra
 
 import (
+	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate"
@@ -11,8 +12,8 @@ import (
 	"path/filepath"
 )
 
-func Up() {
-	m := connect()
+func Up(db *sql.DB) {
+	m := connect(db)
 
 	if err := m.Up(); err != nil && err != migrate.ErrNoChange {
 		log.Fatalf("An error occurred while syncing the database.. %v", err)
@@ -21,8 +22,8 @@ func Up() {
 	log.Println("Database migrated")
 }
 
-func Down() {
-	m := connect()
+func Down(db *sql.DB) {
+	m := connect(db)
 
 	if err := m.Down(); err != nil && err != migrate.ErrNoChange {
 		log.Fatalf("An error occurred while syncing the database.. %v", err)
@@ -31,8 +32,8 @@ func Down() {
 	log.Println("Database migrated")
 }
 
-func connect() *migrate.Migrate {
-	driver, err := mysql.WithInstance(GetDB(), &mysql.Config{})
+func connect(db *sql.DB) *migrate.Migrate {
+	driver, err := mysql.WithInstance(db, &mysql.Config{})
 
 	if err != nil {
 		log.Fatal(err)

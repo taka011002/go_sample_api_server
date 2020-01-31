@@ -1,16 +1,28 @@
-This is go_sample_api_server
+# go_sample_api_server 
 
-migrate
+# Environment
+- go v1.12
 
-```shell script
+## Installation & Run
+
+### docker-compose
+```
+$ docker-compose up
+$ docker exec -it go_sample_api_server_app_1 go run cmd/migrate/main.go #migrate
+$ docker exec -it go_sample_api_server_app_1 /bin/ash 
+``` 
+
+### local
+```
+$ go run cmd/api/main.go
+```
+
+## cmd
+migrate up
+```
 $ migrate -source file://app/infra/migrate/ -database 'mysql://username:secret@tcp(127.0.0.1:3306)/go_sample_api_server' up
 ```
-
-
-
-migrate
-```shell script
-$ docker exec -it go_sample_api_server_app_1 go run cmd/migrate/main.go
+migrate down
 ```
-
-docker exec -it go_sample_api_server_app_1 /bin/ash
+$ migrate -source file://app/infra/migrate/ -database 'mysql://username:secret@tcp(127.0.0.1:3306)/go_sample_api_server' down
+```

@@ -7,6 +7,5 @@ require (
 	github.com/go-sql-driver/mysql v1.5.0
 	github.com/golang-migrate/migrate v3.5.4+incompatible
 	github.com/gorilla/mux v1.7.3
-	github.com/urfave/negroni v1.0.0
 	golang.org/x/crypto v0.0.0-20190308221718-c2843e01d9a2
 )

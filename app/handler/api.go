@@ -22,7 +22,7 @@ func ApiHandler(handler http.HandlerFunc) http.HandlerFunc {
 			log.UserId = loginUser.Id
 		}
 
-		pre := persistence.NewApiRequestLogPersistence(infra.GetDB())
+		pre := persistence.NewApiRequestLogPersistence(infra.DB)
 		logService := service.NewApiRequestLogService(pre)
 		_ = logService.Create(log)
 
@@ -80,7 +80,7 @@ func GetLoginUser(r *http.Request) (*entity.User, error) {
 
 	if token.Valid {
 		claims := token.Claims.(jwt.MapClaims)
-		userPersistence := persistence.NewUserPersistence(infra.GetDB())
+		userPersistence := persistence.NewUserPersistence(infra.DB)
 		userService := service.NewUserService(userPersistence)
 		return userService.GetByUsername(fmt.Sprintf("%s",claims["user"]))
 	} else {

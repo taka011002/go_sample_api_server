@@ -16,7 +16,6 @@ var router *mux.Router
 
 func Run(host string) {
 	router = mux.NewRouter()
-	infra.Init()
 	defer infra.Close()
 	setRoutes()
 	log.Fatal(http.ListenAndServe(host, router))
@@ -27,7 +26,7 @@ func setRoutes() {
 		fmt.Fprint(w, "Pong")
 	})
 
-	userPersistence := persistence.NewUserPersistence(infra.GetDB())
+	userPersistence := persistence.NewUserPersistence(infra.DB)
 	userService := service.NewUserService(userPersistence)
 	userHandler := handler.NewUserHandler(userService)
 
