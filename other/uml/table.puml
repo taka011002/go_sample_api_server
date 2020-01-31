@@ -1,0 +1,30 @@
+@startuml
+entity users {
+id(PK)
+--
+username
+first_name
+last_name
+email
+password
+phone
+user_status
+}
+
+entity characters {
+id(PK)
+--
+name
+}
+
+entity user_character {
+id(PK)
+--
+user_id
+character_id
+}
+
+users -----{ user_character
+characters -----{ user_character
+
+@enduml
