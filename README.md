@@ -14,7 +14,7 @@ $ docker exec -it go_sample_api_server_app_1 /bin/ash
 
 ### local
 ```
-$ go run cmd/api/main.go
+$ go run main.go
 ```
 
 ## cmd
