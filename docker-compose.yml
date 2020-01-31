@@ -15,7 +15,7 @@ services:
       target: build
     volumes:
       - ./:/go/app
-    command: go run cmd/api/main.go
+    command: go run main.go
     ports:
       - 8080:8080
     env_file:
