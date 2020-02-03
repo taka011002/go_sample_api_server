@@ -9,4 +9,5 @@ type User struct {
 	Password string `json:"password"`
 	Phone string `json:"phone"`
 	UserStatus int `json:"user_status"`
+	UserCharacters []UserCharacters `json:"user_characters"`
 }

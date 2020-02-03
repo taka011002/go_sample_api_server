@@ -15,6 +15,7 @@ entity characters {
 id(PK)
 --
 name
+character_rarity_id
 }
 
 entity user_character {
@@ -22,9 +23,18 @@ id(PK)
 --
 user_id
 character_id
+# 育成ステータスとかの属性も増やす
+}
+
+entity character_rarities {
+id(PK)
+--
+name
+rarity
 }
 
 users -----{ user_character
 characters -----{ user_character
+character_rarities -----{ characters
 
 @enduml

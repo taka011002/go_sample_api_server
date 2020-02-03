@@ -14,21 +14,21 @@ func NewCharacterPersistence(DB *sql.DB) repository.CharacterRepository {
 	return &characterPersistence{DB: DB}
 }
 
-func (cp characterPersistence) Create(name string) error {
-	stmt, err := cp.DB.Prepare("INSERT INTO characters(id, name) VALUES(?, ?)")
+func (cp characterPersistence) Create(name string, characterRarityId int) error {
+	stmt, err := cp.DB.Prepare("INSERT INTO characters(id, name, character_rarity_id) VALUES(?, ?, ?)")
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(0, name)
+	_, err = stmt.Exec(0, name, characterRarityId)
 	return err
 }
 
-func (cp characterPersistence) Update(id int, name string) error {
-	stmt, err := cp.DB.Prepare("UPDATE characters SET name = ? WHERE id = ?")
+func (cp characterPersistence) Update(id int, name string, characterRarityId int) error {
+	stmt, err := cp.DB.Prepare("UPDATE characters SET name = ?, character_rarity_id = ? WHERE id = ?")
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(name, id)
+	_, err = stmt.Exec(name, characterRarityId, id)
 	return err
 }
 
@@ -42,14 +42,20 @@ func (cp characterPersistence) Delete(id int) error {
 }
 
 func (cp characterPersistence) GetByName(name string) (*entity.Character, error) {
-	row := cp.DB.QueryRow("SELECT * FROM characters WHERE username = ?", name)
+	row := cp.DB.QueryRow("SELECT * FROM characters WHERE name = ?", name)
 	//row型をgolangで利用できる形にキャストする。
+	return convertToCharacter(row)
+}
+
+func (cp characterPersistence) GetRand(characterRarityId int) (*entity.Character, error) {
+	q := "SELECT tbl.id, tbl.name, tbl.character_rarity_id FROM characters AS tbl,( SELECT id FROM characters WHERE character_rarity_id = ? ORDER BY RAND() LIMIT 1) AS randam WHERE tbl.id = randam.id LIMIT 1"
+	row := cp.DB.QueryRow(q, characterRarityId)
 	return convertToCharacter(row)
 }
 
 func convertToCharacter(row *sql.Row) (*entity.Character, error) {
 	c := entity.Character{}
-	err := row.Scan(&c.Id, &c.Name)
+	err := row.Scan(&c.Id, &c.Name, &c.CharacterRarityId)
 	if err != nil {
 		return nil, err
 	}

@@ -14,6 +14,7 @@ type CharacterService interface {
 	Update(user *entity.Character) error
 	Delete(user *entity.Character) error
 	GetByName(name string) (*entity.Character, error)
+	CreateOrUpdate(c *entity.Character) error
 }
 
 func NewCharacterService(r repository.CharacterRepository) CharacterService {
@@ -21,14 +22,14 @@ func NewCharacterService(r repository.CharacterRepository) CharacterService {
 }
 
 func (cs characterServiceImpl) Create(c *entity.Character) error {
-	if err := cs.characterRepository.Create(c.Name); err != nil {
+	if err := cs.characterRepository.Create(c.Name, c.CharacterRarityId); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (cs characterServiceImpl) Update(c *entity.Character) error {
-	if err := cs.characterRepository.Update(c.Id, c.Name); err != nil {
+	if err := cs.characterRepository.Update(c.Id, c.Name, c.CharacterRarityId); err != nil {
 		return err
 	}
 	return nil
@@ -47,5 +48,25 @@ func (cs characterServiceImpl) Delete(c *entity.Character) error {
 	if err != nil {
 		return err
 	}
+	return nil
+}
+
+func (cs characterServiceImpl) CreateOrUpdate(c *entity.Character) error {
+	cc, err := cs.characterRepository.GetByName(c.Name)
+	if err != nil {
+		return err
+	}
+
+	if cc == nil {
+		err = cs.Create(c)
+	} else {
+		c.Id = cc.Id
+		err = cs.Update(c)
+	}
+
+	if err != nil {
+		return err
+	}
+
 	return nil
 }

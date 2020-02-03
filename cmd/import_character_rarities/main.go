@@ -28,8 +28,8 @@ func main()  {
 		log.Fatal(err)
 	}
 
-	p := persistence.NewCharacterPersistence(infra.DB)
-	s := service.NewCharacterService(p)
+	p := persistence.NewCharacterRarityPersistence(infra.DB)
+	s := service.NewCharacterRarityService(p)
 
 	for {
 		line, err := reader.Read()
@@ -37,17 +37,14 @@ func main()  {
 			break
 		}
 
-		characterRarityId, err := strconv.Atoi(line[1])
-		c := entity.Character{Name: line[0], CharacterRarityId: characterRarityId}
+		rarity, err := strconv.Atoi(line[1])
+		c := entity.CharacterRarity{Name: line[0], Rarity: rarity}
 		if err := s.CreateOrUpdate(&c); err != nil {
 			fmt.Println(err)
 			fmt.Println("failed insert", c.Name)
 		} else {
 			fmt.Println("successed insert", c.Name)
 		}
-
 	}
-
-
 
 }

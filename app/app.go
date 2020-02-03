@@ -29,12 +29,23 @@ func setRoutes() {
 	userPersistence := persistence.NewUserPersistence(infra.DB)
 	userService := service.NewUserService(userPersistence)
 	userHandler := handler.NewUserHandler(userService)
+	gachaPersistence := persistence.NewUserCharacterPersistence(infra.DB)
+	gachaService := service.NewGachaService(gachaPersistence)
+	gachaHandler := handler.NewGachaHandler(gachaService)
+	usercharacterPresistence := persistence.NewUserCharacterPersistence(infra.DB)
+	usercharacterService := service.NewUserCharacterService(usercharacterPresistence)
+	characterHandler := handler.NewCharacterHandler(usercharacterService)
+
 
 	post("/user/login", handler.ApiHandler(userHandler.SignIn))
-	post("/user", handler.ApiHandler(handler.AuthHandler(userHandler.SignUp)))
+	post("/user", handler.ApiHandler(userHandler.SignUp))
 	get("/user", handler.ApiHandler(handler.AuthHandler(userHandler.GetUser)))
 	put("/user", handler.ApiHandler(handler.AuthHandler(userHandler.Update)))
 	delete("/user", handler.ApiHandler(handler.AuthHandler(userHandler.Delete)))
+
+	post("/gacha/draw", handler.ApiHandler(handler.AuthHandler(gachaHandler.Draw)))
+	get("/character/list", handler.ApiHandler(handler.AuthHandler(characterHandler.List)))
+
 }
 
 // Get wraps the router for GET method

@@ -20,9 +20,9 @@ $ go run main.go
 ## cmd
 migrate up
 ```
-$ migrate -source file://app/infra/migrate/ -database 'mysql://username:secret@tcp(127.0.0.1:3306)/go_sample_api_server' up
+$ migrate -source file://app/infra/migrations/ -database 'mysql://username:secret@tcp(127.0.0.1:3306)/go_sample_api_server' up
 ```
 migrate down
 ```
-$ migrate -source file://app/infra/migrate/ -database 'mysql://username:secret@tcp(127.0.0.1:3306)/go_sample_api_server' down
+$ migrate -source file://app/infra/migrations/ -database 'mysql://username:secret@tcp(127.0.0.1:3306)/go_sample_api_server' down
 ```
