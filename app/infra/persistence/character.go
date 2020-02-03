@@ -48,7 +48,7 @@ func (cp characterPersistence) GetByName(name string) (*entity.Character, error)
 }
 
 func (cp characterPersistence) GetRand(characterRarityId int) (*entity.Character, error) {
-	q := "SELECT tbl.id, tbl.name, tbl.character_rarity_id FROM characters AS tbl,( SELECT id FROM characters WHERE character_rarity_id = ? ORDER BY RAND() LIMIT 1) AS randam WHERE tbl.id = randam.id LIMIT 1"
+	q := "SELECT tbl.* FROM characters AS tbl,( SELECT id FROM characters WHERE character_rarity_id = ? ORDER BY RAND() LIMIT 1) AS randam WHERE tbl.id = randam.id LIMIT 1"
 	row := cp.DB.QueryRow(q, characterRarityId)
 	return convertToCharacter(row)
 }
