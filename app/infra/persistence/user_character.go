@@ -64,7 +64,7 @@ func convertToUserCharacters(rows *sql.Rows) (*entity.UserCharacters, error) {
 	for rows.Next() {
 		uc := entity.UserCharacter{}
 		c := entity.Character{}
-		err := rows.Scan(&uc.Id, &uc.UserId, &uc.CharacterId, &c.Id, &c.Name, &c.CharacterRarityId)
+		err := rows.Scan(&uc.Id, &uc.UserId, &uc.CharacterId, &c.Id, &c.Name, &c.CharacterRarityId, &c.Power)
 
 		if err != nil {
 			return nil, err

@@ -1,0 +1,1 @@
+ALTER TABLE characters ADD power INTEGER NOT NULL;

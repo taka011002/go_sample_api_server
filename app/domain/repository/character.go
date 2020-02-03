@@ -5,8 +5,8 @@ import (
 )
 
 type CharacterRepository interface {
-	Create(name string, characterRarityId int) error
-	Update(id int, name string, characterRarityId int) error
+	Create(name string, characterRarityId int, power int) error
+	Update(id int, name string, characterRarityId int, power int) error
 	GetByName(name string) (*entity.Character, error)
 	Delete(id int) error
 	GetRand(characterRarityId int) (*entity.Character, error)

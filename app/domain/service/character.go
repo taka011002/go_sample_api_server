@@ -22,14 +22,14 @@ func NewCharacterService(r repository.CharacterRepository) CharacterService {
 }
 
 func (cs characterServiceImpl) Create(c *entity.Character) error {
-	if err := cs.characterRepository.Create(c.Name, c.CharacterRarityId); err != nil {
+	if err := cs.characterRepository.Create(c.Name, c.CharacterRarityId, c.Power); err != nil {
 		return err
 	}
 	return nil
 }
 
 func (cs characterServiceImpl) Update(c *entity.Character) error {
-	if err := cs.characterRepository.Update(c.Id, c.Name, c.CharacterRarityId); err != nil {
+	if err := cs.characterRepository.Update(c.Id, c.Name, c.CharacterRarityId, c.Power); err != nil {
 		return err
 	}
 	return nil

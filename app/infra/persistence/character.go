@@ -14,21 +14,21 @@ func NewCharacterPersistence(DB *sql.DB) repository.CharacterRepository {
 	return &characterPersistence{DB: DB}
 }
 
-func (cp characterPersistence) Create(name string, characterRarityId int) error {
-	stmt, err := cp.DB.Prepare("INSERT INTO characters(id, name, character_rarity_id) VALUES(?, ?, ?)")
+func (cp characterPersistence) Create(name string, characterRarityId int, power int) error {
+	stmt, err := cp.DB.Prepare("INSERT INTO characters(id, name, character_rarity_id, power) VALUES(?, ?, ?, ?)")
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(0, name, characterRarityId)
+	_, err = stmt.Exec(0, name, characterRarityId, power)
 	return err
 }
 
-func (cp characterPersistence) Update(id int, name string, characterRarityId int) error {
-	stmt, err := cp.DB.Prepare("UPDATE characters SET name = ?, character_rarity_id = ? WHERE id = ?")
+func (cp characterPersistence) Update(id int, name string, characterRarityId int, power int) error {
+	stmt, err := cp.DB.Prepare("UPDATE characters SET name = ?, character_rarity_id = ?, power = ? WHERE id = ?")
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(name, characterRarityId, id)
+	_, err = stmt.Exec(name, characterRarityId, power, id)
 	return err
 }
 
@@ -55,7 +55,7 @@ func (cp characterPersistence) GetRand(characterRarityId int) (*entity.Character
 
 func convertToCharacter(row *sql.Row) (*entity.Character, error) {
 	c := entity.Character{}
-	err := row.Scan(&c.Id, &c.Name, &c.CharacterRarityId)
+	err := row.Scan(&c.Id, &c.Name, &c.CharacterRarityId, &c.Power)
 	if err != nil {
 		return nil, err
 	}

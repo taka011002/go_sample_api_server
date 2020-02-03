@@ -38,7 +38,15 @@ func main()  {
 		}
 
 		characterRarityId, err := strconv.Atoi(line[1])
-		c := entity.Character{Name: line[0], CharacterRarityId: characterRarityId}
+		if err != nil {
+			log.Fatal(err)
+		}
+		characterPower, err := strconv.Atoi(line[2])
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		c := entity.Character{Name: line[0], CharacterRarityId: characterRarityId,Power: characterPower}
 		if err := s.CreateOrUpdate(&c); err != nil {
 			fmt.Println(err)
 			fmt.Println("failed insert", c.Name)
@@ -47,7 +55,5 @@ func main()  {
 		}
 
 	}
-
-
 
 }

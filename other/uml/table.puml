@@ -16,6 +16,7 @@ id(PK)
 --
 name
 character_rarity_id
+power
 }
 
 entity user_character {
