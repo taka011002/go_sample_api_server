@@ -40,7 +40,6 @@ func main()  {
 		rarity, err := strconv.Atoi(line[1])
 		c := entity.CharacterRarity{Name: line[0], Rarity: rarity}
 		if err := s.CreateOrUpdate(&c); err != nil {
-			fmt.Println(err)
 			fmt.Println("failed insert", c.Name)
 		} else {
 			fmt.Println("successed insert", c.Name)

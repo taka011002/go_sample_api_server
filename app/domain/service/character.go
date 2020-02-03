@@ -53,9 +53,6 @@ func (cs characterServiceImpl) Delete(c *entity.Character) error {
 
 func (cs characterServiceImpl) CreateOrUpdate(c *entity.Character) error {
 	cc, err := cs.characterRepository.GetByName(c.Name)
-	if err != nil {
-		return err
-	}
 
 	if cc == nil {
 		err = cs.Create(c)

@@ -44,9 +44,6 @@ func (cs characterRarityServiceImpl) Delete(c *entity.CharacterRarity) error {
 
 func (cs characterRarityServiceImpl) CreateOrUpdate(c *entity.CharacterRarity) error {
 	cc, err := cs.characterRarityRepository.GetByName(c.Name)
-	if err != nil {
-		return err
-	}
 
 	if cc == nil {
 		err = cs.Create(c)
