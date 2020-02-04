@@ -1,4 +1,4 @@
-# go_sample_api_server 
+# go_sample_api_server ![](https://github.com/taka011002/go_sample_api_server/workflows/.github/workflows/production-deploy.yml/badge.svg)
 
 # About
 This is REST API server sample with golang.  
