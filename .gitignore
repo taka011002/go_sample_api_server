@@ -1,4 +1,6 @@
 mysql_data
 
 /main
-/.env.prd
+/dev.env
+/prd.env
+
