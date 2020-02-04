@@ -14,21 +14,21 @@ func NewUserPersistence(DB *sql.DB) repository.UserRepository {
 	return &userPersistence{DB: DB}
 }
 
-func (up userPersistence) Create(username string, firstName string, lastName string, email string, password string, phone string, userStatus int) error {
-	stmt, err := up.DB.Prepare("INSERT INTO users(id, username, first_name, last_name, email, password, phone, user_status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)")
+func (up userPersistence) Create(username string, password string) error {
+	stmt, err := up.DB.Prepare("INSERT INTO users(id, username, password) VALUES(?, ?, ?)")
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(0, username, firstName, lastName, email, password, phone, userStatus)
+	_, err = stmt.Exec(0, username, password)
 	return err
 }
 
-func (up userPersistence) Update(id int, username string, firstName string, lastName string, email string, password string, phone string, userStatus int) error {
-	stmt, err := up.DB.Prepare("UPDATE users SET username = ?, first_name = ?, last_name = ?, email = ?, password = ?, phone = ?, user_status = ? WHERE id = ?")
+func (up userPersistence) Update(id int, username string, password string) error {
+	stmt, err := up.DB.Prepare("UPDATE users SET username = ?, password = ? WHERE id = ?")
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(username, firstName, lastName, email, password, phone, userStatus, id)
+	_, err = stmt.Exec(username, password, id)
 	return err
 }
 
@@ -49,7 +49,7 @@ func (up userPersistence) GetByUsername(username string) (*entity.User, error) {
 
 func convertToUser(row *sql.Row) (*entity.User, error) {
 	user := entity.User{}
-	err := row.Scan(&user.Id, &user.Username, &user.FirstName, &user.LastName, &user.Email, &user.Password, &user.Phone, &user.UserStatus)
+	err := row.Scan(&user.Id, &user.Username, &user.Password)
 	if err != nil {
 		return nil, err
 	}

@@ -5,14 +5,22 @@ import (
 	"encoding/json"
 	"fmt"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
 	"strconv"
+	"time"
 )
 
 type token struct {
 	Token string `json:"token"`
 }
+
+func init() {
+	rand.Seed(time.Now().UnixNano())
+}
+
+var rs1Letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
 func main() {
 	base := "http://localhost"
@@ -20,7 +28,7 @@ func main() {
 
 	for i := 0; i < 20; i++ {
 		n := strconv.Itoa(i+1)
-		jsonStr := `{"username": "taka` + n + `", "first_name": "string","last_name": "string","email": "taka` + n + `", "password": "password","phone": "string","user_status": 1}`
+		jsonStr := `{"username": "`+ randString(10)  + `", "password": "password"}`
 
 		req, err := http.NewRequest(http.MethodPost, base + "user", bytes.NewBuffer([]byte(jsonStr)))
 		if err != nil {
@@ -51,4 +59,12 @@ func main() {
 		}
 
 	}
+}
+
+func randString(n int) string {
+	b := make([]rune, n)
+	for i := range b {
+		b[i] = rs1Letters[rand.Intn(len(rs1Letters))]
+	}
+	return string(b)
 }

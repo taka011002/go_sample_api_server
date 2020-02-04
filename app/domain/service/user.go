@@ -30,7 +30,7 @@ func (uu userServiceImpl) Create(user *entity.User) error {
 		return err
 	}
 
-	err = uu.userRepository.Create(user.Username, user.FirstName, user.LastName, user.Email, string(hashedPassword), user.Phone, 1)
+	err = uu.userRepository.Create(user.Username, string(hashedPassword))
 	if err != nil {
 		return err
 	}
@@ -56,7 +56,7 @@ func (uu userServiceImpl) Update(user *entity.User) error {
 		return err
 	}
 
-	err = uu.userRepository.Update(user.Id, user.Username, user.FirstName, user.LastName, user.Email, string(hashedPassword), user.Phone, user.UserStatus)
+	err = uu.userRepository.Update(user.Id, user.Username, string(hashedPassword))
 	if err != nil {
 		return err
 	}

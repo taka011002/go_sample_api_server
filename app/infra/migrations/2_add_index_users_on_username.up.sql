@@ -1,1 +1,0 @@
-ALTER TABLE users ADD INDEX index_users_on_username(username);
