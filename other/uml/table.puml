@@ -3,12 +3,7 @@ entity users {
 id(PK)
 --
 username
-first_name
-last_name
 email
-password
-phone
-user_status
 }
 
 entity characters {
