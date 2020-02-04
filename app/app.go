@@ -22,9 +22,9 @@ func Run(host string) {
 }
 
 func setRoutes() {
-	get("/", func(w http.ResponseWriter, r *http.Request) {
+	get("/", handler.ApiHandler(func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, "Hello go_sample_api_server!")
-	})
+	}))
 
 	userPersistence := persistence.NewUserPersistence(infra.DB)
 	userService := service.NewUserService(userPersistence)
