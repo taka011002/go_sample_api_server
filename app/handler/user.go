@@ -90,6 +90,12 @@ func (uh userHandlerImpl) GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func (uh userHandlerImpl) Update(w http.ResponseWriter, r *http.Request) {
+	loginUser, err := GetLoginUser(r)
+	if err != nil {
+		respondError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	user := entity.User{}
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&user); err != nil {
@@ -97,6 +103,7 @@ func (uh userHandlerImpl) Update(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	user.Id = loginUser.Id
 	if err := uh.userService.Update(&user); err != nil {
 		respondError(w, http.StatusInternalServerError, err.Error())
 		return
