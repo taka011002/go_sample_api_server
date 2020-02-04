@@ -1,7 +1,10 @@
 # go_sample_api_server 
 
 # About
-This is REST API server sample with golang.
+This is REST API server sample with golang.  
+Using gorilla/mux for Routing. Not using ORM.  
+Structure is a Layer Architecture like Clean Architecture.
+
 
 # Environment
 - go v1.12
