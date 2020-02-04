@@ -1,0 +1,259 @@
+swagger: "2.0"
+info:
+  version: "1.0.0"
+  title: "TechTrain MISSION Game API"
+host: "localhost:8080"
+securityDefinitions:
+  apiKey:
+    type: "apiKey"
+    name: "Authorization"
+    in: "header"
+tags:
+  - name: "user"
+    description: "ユーザ関連API"
+  - name: "gacha"
+    description: "ガチャ関連API"
+  - name: "character"
+    description: "キャラクター関連API"
+  - name: "ranking"
+    description: "ランキング関連API"
+schemes:
+  - "http"
+paths:
+  /user:
+    post:
+      tags:
+        - "user"
+      summary: "ユーザ情報作成API"
+      description: "ユーザ情報を作成します。\n
+      ユーザの名前情報をリクエストで受け取り、ユーザIDと認証用のトークンを生成しデータベースへ保存します。"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Request Body"
+          required: true
+          schema:
+            $ref: "#/definitions/UserCreateRequest"
+      responses:
+        201:
+          "description": "A successful response."
+          "schema":
+            "$ref": "#/definitions/UserCreateResponse"
+    get:
+      tags:
+        - "user"
+      summary: "ユーザ情報取得API"
+      description: "ユーザ情報を取得します。\n
+      ユーザの認証と特定の処理はリクエストヘッダのAuthorizationを読み取ってデータベースに照会をします。"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - apiKey: []
+      responses:
+        200:
+          "description": "A successful response."
+          "schema":
+            "$ref": "#/definitions/UserGetResponse"
+    put:
+      tags:
+        - "user"
+      summary: "ユーザ情報更新API"
+      description: "ユーザ情報の更新をします"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - apiKey: []
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Request Body"
+          required: true
+          schema:
+            $ref: "#/definitions/UserUpdateRequest"
+      responses:
+        200:
+          "description": "A successful response."
+    delete:
+      tags:
+        - "user"
+      summary: "ユーザ情報更新API"
+      description: "ユーザ情報の削除をします。"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - apiKey: []
+      responses:
+        200:
+          "description": "A successful response."
+
+  /user/login:
+    post:
+      tags:
+        - "user"
+      summary: "トークン取得API"
+      description: "ログインし、tokenを取得します\n"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Request Body"
+          required: true
+          schema:
+            $ref: "#/definitions/UserCreateRequest"
+      responses:
+        201:
+          "description": "A successful response."
+          "schema":
+            "$ref": "#/definitions/UserCreateResponse"
+
+
+  /gacha/draw:
+    post:
+      tags:
+        - "gacha"
+      summary: "ガチャ実行API"
+      description: "ガチャを引いてキャラクターを取得する処理を実装します。\n
+      獲得したキャラクターはユーザ所持キャラクターテーブルへ保存します。\n
+      同じ種類のキャラクターでもユーザは複数所持することができます。\n
+      \n
+      キャラクターの確率は等倍ではなく、任意に変更できるようテーブルを設計しましょう。"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - apiKey: []
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Request Body"
+          required: true
+          schema:
+            $ref: "#/definitions/GachaDrawRequest"
+      responses:
+        200:
+          "description": "A successful response."
+          "schema":
+            "$ref": "#/definitions/GachaDrawResponse"
+
+  /character/list:
+    get:
+      tags:
+        - "character"
+      summary: "ユーザ所持キャラクター一覧取得API"
+      description: "ユーザが所持しているキャラクター一覧情報を取得します。"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - apiKey: []
+      responses:
+        200:
+          "description": "A successful response."
+          "schema":
+            "$ref": "#/definitions/CharacterListResponse"
+
+  /ranking/character_power:
+    get:
+      tags:
+        - "ranking"
+      summary: "ランキングAPI"
+      description: "ユーザが所持しているキャラクターのPowerを合計したものをランキング形式で返します。"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      security:
+        - apiKey: []
+      responses:
+        200:
+          "description": "A successful response."
+          "schema":
+            "$ref": "#/definitions/CharacterListResponse"
+
+definitions:
+  UserCreateRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+        description: "ユーザー名"
+      password:
+        type: "string"
+        description: "パスワード"
+  UserCreateResponse:
+    type: "object"
+    properties:
+      token:
+        type: "string"
+        description: "クライアント側で保存するトークン"
+  UserGetResponse:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        description: "ユーザ名"
+  UserUpdateRequest:
+    type: "object"
+    properties:
+      username:
+        type: "string"
+        description: "ユーザ名"
+      password:
+        type: "string"
+        description: "password"
+  GachaDrawRequest:
+    type: "object"
+    properties:
+      times:
+        type: "integer"
+        description: "実行回数"
+  GachaDrawResponse:
+    type: "object"
+    properties:
+      results:
+        type: "array"
+        items:
+          $ref: "#/definitions/GachaResult"
+  GachaResult:
+    type: "object"
+    properties:
+      characterID:
+        type: "string"
+        description: "キャラクターID"
+      name:
+        type: "string"
+        description: "キャラクター名"
+  CharacterListResponse:
+    type: "object"
+    properties:
+      characters:
+        type: "array"
+        items:
+          $ref: "#/definitions/UserCharacter"
+  UserCharacter:
+    type: "object"
+    properties:
+      userCharacterID:
+        type: "string"
+        description: "ユニークID"
+      characterID:
+        type: "string"
+        description: "キャラクターID"
+      name:
+        type: "string"
+        description: "キャラクター名"
