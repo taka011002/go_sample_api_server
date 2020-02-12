@@ -7,7 +7,7 @@ Structure is a Layer Architecture like Clean Architecture.
 
 
 # Environment
-- go v1.12
+- go v1.13
 - mysql v5.7
 
 # Sample Server
