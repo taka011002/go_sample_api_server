@@ -82,7 +82,7 @@ func GetLoginUser(r *http.Request) (*entity.User, error) {
 		claims := token.Claims.(jwt.MapClaims)
 		userPersistence := persistence.NewUserPersistence(infra.DB)
 		userService := service.NewUserService(userPersistence)
-		return userService.GetByUsername(fmt.Sprintf("%s",claims["user"]))
+		return userService.GetByUsername(fmt.Sprintf("%s", claims["user"]))
 	} else {
 		return nil, nil
 	}

@@ -13,7 +13,7 @@ import (
 	"strconv"
 )
 
-func main()  {
+func main() {
 	flag.Parse()
 	file, err := os.Open(flag.Arg(0))
 	defer file.Close()

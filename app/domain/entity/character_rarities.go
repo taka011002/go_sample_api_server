@@ -1,9 +1,9 @@
 package entity
 
 type CharacterRarity struct {
-	Id    int `json:"id"`
-	Name string `json:"name"`
-	Rarity int `json:"rarity"`
+	Id     int    `json:"id"`
+	Name   string `json:"name"`
+	Rarity int    `json:"rarity"`
 }
 
 type CharacterRarities []CharacterRarity

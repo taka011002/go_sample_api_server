@@ -28,7 +28,7 @@ func (cp characterRarityPersistence) Update(id int, name string, rarity int) err
 	if err != nil {
 		return err
 	}
-	_, err = stmt.Exec(name, rarity,id)
+	_, err = stmt.Exec(name, rarity, id)
 	return err
 }
 

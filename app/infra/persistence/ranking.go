@@ -30,7 +30,7 @@ func (rp rankingPersistence) CharacterPower() (*[]entity.Ranking, error) {
 	i := 1
 	for rows.Next() {
 		r := entity.Ranking{}
-		err := rows.Scan(&r.User.Id,&r.Score)
+		err := rows.Scan(&r.User.Id, &r.Score)
 
 		if err != nil {
 			return nil, err

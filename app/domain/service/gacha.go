@@ -53,7 +53,7 @@ func (gs gachaServiceImpl) Draw(user *entity.User, times int) ([]*entity.Charact
 		draw := rand.Intn(boundaries[len(boundaries)-1]) + 1
 		for i, boundary := range boundaries {
 			if draw <= boundary {
-				c, err := cper.GetRand(i+1)
+				c, err := cper.GetRand(i + 1)
 
 				if err != nil {
 					return nil, err

@@ -27,10 +27,10 @@ func main() {
 	base += fmt.Sprintf(":%s/", os.Getenv("PORT"))
 
 	for i := 0; i < 20; i++ {
-		n := strconv.Itoa(i+1)
-		jsonStr := `{"username": "`+ randString(10)  + `", "password": "password"}`
+		n := strconv.Itoa(i + 1)
+		jsonStr := `{"username": "` + randString(10) + `", "password": "password"}`
 
-		req, err := http.NewRequest(http.MethodPost, base + "user", bytes.NewBuffer([]byte(jsonStr)))
+		req, err := http.NewRequest(http.MethodPost, base+"user", bytes.NewBuffer([]byte(jsonStr)))
 		if err != nil {
 			log.Fatal(err)
 		}
@@ -49,8 +49,8 @@ func main() {
 		}
 		_ = r.Body.Close()
 
-		jsonStr = `{"times":`+ n + `}`
-		req, err = http.NewRequest(http.MethodPost, base + "gacha/draw", bytes.NewBuffer([]byte(jsonStr)))
+		jsonStr = `{"times":` + n + `}`
+		req, err = http.NewRequest(http.MethodPost, base+"gacha/draw", bytes.NewBuffer([]byte(jsonStr)))
 		req.Header.Add("Authorization", fmt.Sprintf("Bearer %s", token.Token))
 		client = &http.Client{}
 		r, err = client.Do(req)

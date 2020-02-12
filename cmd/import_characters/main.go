@@ -13,7 +13,7 @@ import (
 	"strconv"
 )
 
-func main()  {
+func main() {
 	flag.Parse()
 	file, err := os.Open(flag.Arg(0))
 	defer file.Close()
@@ -46,7 +46,7 @@ func main()  {
 			log.Fatal(err)
 		}
 
-		c := entity.Character{Name: line[0], CharacterRarityId: characterRarityId,Power: characterPower}
+		c := entity.Character{Name: line[0], CharacterRarityId: characterRarityId, Power: characterPower}
 		if err := s.CreateOrUpdate(&c); err != nil {
 			fmt.Println(err)
 			fmt.Println("failed insert", c.Name)
