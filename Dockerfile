@@ -5,7 +5,8 @@ WORKDIR /go/app
 COPY . .
 
 RUN apk add --no-cache git \
- && go build -o main
+ && go build -o main \
+ && go get github.com/oxequa/realize
 
 FROM alpine
 
