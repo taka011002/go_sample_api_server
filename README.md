@@ -7,7 +7,7 @@ Structure is a Layer Architecture like Clean Architecture.
 
 
 # Environment
-- go v1.13
+- go v1.14
 - mysql v5.7
 
 # Sample Server
@@ -19,6 +19,10 @@ Use Container deploy and Github-Actions(`.github/workflows/production-deploy.yml
 ```
 # Download this project
 go get github.com/taka011002/go_sample_api_server
+```
+### make
+```
+$ make up
 ```
 
 ### docker-compose
@@ -41,14 +45,20 @@ $ go run cmd/import_characters/main.go other/csv/characters.csv
 Please read `doc/api-doc.yaml`
 
 ## cmd
-
 ### docker
 shell
+
+```
+$ make bash
+```
 ```
 $ docker exec -it go_sample_api_server_app_1 /bin/ash 
 ```
 
 migrate
+```
+$ make migrate
+```
 ```
 $ docker exec -it go_sample_api_server_app_1 go run cmd/migrate/main.go
 ```
